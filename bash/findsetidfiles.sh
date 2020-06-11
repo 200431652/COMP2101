@@ -24,12 +24,19 @@ echo "============="
 find / -type f -executable -perm -4000 -ls 2>/dev/null | sort -k 3
 echo ""
 
+#title for setgid files
 echo "Setgid files:"
+#space
 echo "============="
+#command for finding files of right type with right permissions 
 find / -type f -executable -perm -6000 -ls 2>/dev/null | sort -k 7
+#closing
 echo ""
 
+#title for 10 largest files
 echo "10 largest files:"
 echo "=============="
+#command for finding 10 largest files of the system
 find / -type f -exec du -h {} + 2>/dev/null | sort -h -r | head -n 10
+#closing
 echo ""
