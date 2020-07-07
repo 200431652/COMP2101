@@ -9,47 +9,7 @@
 # TASK 3: Improve it by giving them 5 tries to get it right before failing
 #           *** Do not use the exit command, and do not use a loop (e.g. while or for)
 
-successd="successdful attempt.."
-faild="Error.. Please try again..."
-referenceString="Password" #Building a variable to keep  password
-read -s -p "Enter A Password:" myString #to get userinput silently for password and then save into $myString
-echo
-#use of if-else condition to check 5 times input is accurate or not by relating with $referenceString.
-if [ $myString = $referenceString ]; then
-	echo "$successd"
-	echo
- else
-	echo "$faild"
-	read -s -p "Try again:::" myString
- if [ $myString = $referenceString ]; then
-	echo "$successd"
-	echo
-  else
-	echo
-	echo "$faild"
-	read -s -p "Try again:::" myString
-  if [ $myString = $referenceString ]; then
-	echo "$successd"
-	echo
- else
-	echo
-	echo "$faild"
-   read -s -p "Try again:::" myString
-if [ $myString = $referenceString ]; then
-	echo "$successd"
-	echo
-  else
-	echo
-	echo "$faild"
-	read -s -p "Try again:::" myString
-  if [ $myString = $referenceString ]; then
-	echo "$successd"
-	echo
- else
-	echo
-	echo "failed attempt. Try again next time.."
-fi
-fi
-fi
-fi
-fi
+myString="TestString"
+referenceString="password"
+
+[ $myString = $referenceString ] && echo "Correct!" || echo "Incorrect."
