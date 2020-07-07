@@ -61,36 +61,27 @@ EOF
 # Per-interface report
 #####
 # define the interface being summarized
-#interface="eno1"
+interface="eno1"
 
 # Find an address and hostname for the interface being summarized
 # we are assuming there is only one IPV4 address assigned to this interface
+ipv4_address=$(ip a s $interface|awk -F '[/ ]+' '/inet /{print $3}')
+ipv4_hostname=$(getent hosts $ipv4_address | awk '{print $2}')
 
 # Identify the network number for this interface and its name if it has one
-total=$(lshw -class network | awk '/logical name:/{print $3}' | wc -l)
-#Create loop for processing of work in array
-for((w=1;w<=$total;w+=1));
-do
-  interface=$(lshw -class network | awk '/logical name:/{print $3}' | awk -v z=$w 'NR==z{print $1; exit}')
-  if [[ $interface = lo* ]] ; then continue ; fi
-  #conditions applied to skip loopback interface
+network_address=$(ip route list dev $interface scope link|cut -d ' ' -f 1)
+network_number=$(cut -d / -f 1 <<<"$network_address")
+network_name=$(getent networks $network_number|awk '{print $1}')
 
-	ipv4_address=$(ip a s $interface | awk -F '[/ ]+' '/inet /{print $3}')
-	ipv4_hostname=$(getent hosts $ipv4_address | awk '{print $2}')
-	network_address=$(ip route list dev $interface scope link|cut -d ' ' -f 1)
-	network_number=$(cut -d / -f 1 <<<"$network_address")
-	network_name=$(getent networks $network_number|awk '{print $1}')
-	#putting command output to variable
+cat <<EOF
+Interface $interface:
+===============
+Address         : $ipv4_address
+Name            : $ipv4_hostname
+Network Address : $network_address
+Network Name    : $network_name
 
-  echo Interface $interface:
-  echo ===============
-  echo Address         : $ipv4_address
-  echo Name            : $ipv4_hostname
-  echo Network Address : $network_address
-  echo Network Name    : $network_name
-  #use of echo for printing everything.
-#end of loop
-done
+EOF
 #####
 # End of per-interface report
 #####
